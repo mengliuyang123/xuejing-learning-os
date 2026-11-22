@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Next.js & Electron build artifacts
+.next/
+dist-desktop/
+out/
+*.tsbuildinfo
+
+# Local SQLite database & user runtime data
+data/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Environment variables & secrets (NEVER commit API keys)
+.env
+.env.*
+!.env.example
+
+# IDE & OS files
+.idea/
+.vscode/
+.agents/
+.DS_Store
+Thumbs.db

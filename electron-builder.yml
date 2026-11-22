@@ -1,0 +1,42 @@
+appId: com.xuejing.desktop
+productName: 学径
+copyright: Copyright © 2026 学径
+directories:
+  output: dist-desktop
+  buildResources: build
+asar: true
+files:
+  - electron/**/*
+  - .next/**/*
+  - public/**/*
+  - skills/**/*
+  - package.json
+  - "!data/**"
+  - "!tests/**"
+  - "!.next/cache/**"
+win:
+  icon: build/icon.ico
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  shortcutName: 学径
+  uninstallDisplayName: 学径
+portable:
+  artifactName: "学径-${version}-portable.${ext}"
+mac:
+  icon: build/icon.png
+  category: public.app-category.education
+  target:
+    - dmg
+linux:
+  icon: build/icon.png
+  category: Education
+  target:
+    - AppImage
