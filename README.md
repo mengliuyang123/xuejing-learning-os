@@ -12,49 +12,102 @@
 
 ## ✨ 项目简介
 
-**学径（XueJing / LearnOS）** 是一款面向深度自学者与终身学习者的 **本机优先个人 AI 学习操作系统（Personal AI Learning OS）**。它将 **结构化课程规划**、**先修依赖知识图谱（DAG）**、**认知掌握度追踪（BKT + FSRS）**、**睡眠红线约束日历排程** 与 **苏格拉底式 ReAct 伴学 Agent** 融合在统一的三栏桌面工作台中。
+**学径（XueJing / LearnOS）** 是一款面向深度自学者与终身学习者的 **本机优先个人 AI 学习操作系统（Personal AI Learning OS）**。它将 **大模型自治课程规划**、**先修依赖知识图谱（DAG）**、**认知掌握度追踪（BKT + FSRS）**、**睡眠红线约束日历排程** 与 **苏格拉底式 ReAct 伴学 Agent** 融合在统一的三栏桌面工作台中。
 
 - **零外部服务依赖**：基于 Node.js 22+ 内置 `node:sqlite`（WAL 模式），无需安装或配置 PostgreSQL、Neo4j、Redis 或 Docker。
 - **100% 本机数据主权**：所有学习轨道、知识节点掌握度、日程安排、长期学习记忆、对话历史、计划变更 Diff 与 Agent 运行轨迹全部保存在本机单文件 `data/learnos.sqlite` 中，支持一键全量 JSON 备份恢复与 `.ics` 日历导出。
 - **Web 与原生桌面双形态**：既可通过浏览器直接访问本地服务，也可通过 Electron 一键启动或打包为 Windows / macOS / Linux 原生桌面应用。
-- **多模型直连与无密钥兜底**：支持 DeepSeek（含 `deepseek-chat` / `deepseek-reasoner` 思考模式）、OpenAI、Google Gemini、OpenRouter、Vercel AI Gateway 及本地 Ollama；未配置 API Key 时自动启用本地同构多步 ReAct 演示引擎。
+- **多模型直连与无密钥兜底**：支持 DeepSeek（含 `deepseek-flash` / `deepseek-chat` / `deepseek-reasoner` 思考模式）、OpenAI、Google Gemini、OpenRouter、Vercel AI Gateway 及本地 Ollama；未配置 API Key 时自动启用本地同构多步 ReAct 演示引擎。
 
 ---
 
-## 🖼️ 应用界面预览
+## 📖 核心使用流程与大模型实机演示
 
-### 1. 今日工作台与 AI 伴学助手（三栏沉浸工作区）
-左侧导航快速切换核心视图（支持 `Ctrl+1` ~ `Ctrl+8` 与 `Ctrl+K` 全局命令面板），中央聚焦当下学习目标与今日日程，右侧常驻上下文感知的「学习助手」伴学面板。
+下面展示在配置好大模型（以 **DeepSeek `deepseek-flash` 直连** 为例）后，从 **输入学习目标 → 大模型规划生成 10 节课程与首课讲义 → AI 伴学助手生成交互式架构图解与随堂测验 → 课堂答题更新 BKT 掌握度 → 动态 DAG 知识图谱与自动日历排程 → ReAct 全链路轨迹审计** 的完整使用流程。
 
-![今日工作台](./docs/screenshots/01-today-workbench.png)
+### 第 1 步：新建学习目标，启动大模型课程规划
+点击左侧边栏顶部的 **「+ 新建学习目标」**，填写你想攻克的主题（例如：`深入掌握 AI Agent 架构与 ReAct 工具调用实战`），并选择你的当前基础（初学入门 / 了解基础 / 有实战经验）、学习深度（标准实战 / 速学聚焦 / 系统深入）、目标周期（10 天）、每日可投入时长（45 分钟）以及知识获取方式（支持 **先联网研究权威资料**、**使用模型已有知识快速开始** 或 **基于个人参考资料**）。
 
-### 2. 沉浸式互动课堂（Classroom）
-在课堂视图中围绕当前知识节点展开分步讲解、主动回忆测验（填空 / 单选 / 简答 / 代码练习）、可视化架构图解与课堂专注计时。
+点击 **「直接创建轨道并排课」**（或 **「先和助手讨论路线」**），后台大模型工作流会自动完成课程大纲拆解、先修依赖 DAG 构建、首课深度备课与无冲突日历排程：
 
-![课堂视图](./docs/screenshots/02-classroom.png)
-
-### 3. 动态 DAG 知识图谱（Knowledge Explorer）
-自动进行先修依赖环检测与拓扑分层布局，直观呈现整个学习轨道的阶段路线、先修解锁关系与节点掌握度状态。
-
-![知识图谱](./docs/screenshots/03-knowledge-graph.png)
-
-### 4. 学习日历与睡眠红线排程（Study Calendar）
-支持日轴与周轴视图，严格保护睡眠红线（默认 `23:00–07:00` 绝不排课）与固定锁定时段，支持错课自动检测、AI 助手一键重排及标准 `.ics` 日历导出。
-
-![学习日历](./docs/screenshots/04-study-calendar.png)
-
-### 5. 运行轨迹与 SQLite 审计中心（Execution Trace Inspector）
-实时追踪并持久化每一次 ReAct Agent 运行的完整思考链、工具调用参数、返回结果、耗时及状态变更 Diff（`+ 新增` / `调整 原时间 → 新时间` / `- 移除`）。
-
-![运行轨迹与审计中心](./docs/screenshots/05-execution-trace.png)
+![第 1 步：新建学习目标弹窗](./docs/screenshots/01-goal-setup.png)
 
 ---
 
-## 🚀 核心功能与技术亮点
+### 第 2 步：在「今日工作台」查看生成的轨道并与右侧 AI 伴学助手互动
+课程生成完成后，左侧边栏「学习轨道」下会出现新创建的 **`10 天 AI Agent 架构与 ReAct 工具调用实战路径 (0/10)`**，中央「今日工作台」自动聚焦今日主攻课程 **`Agent 系统边界与循环架构`** 与今日 `19:00` 的学习日程。
+
+你可以随时在右侧 **「学习助手」** 对话框中向大模型提问（例如：*“请帮我用可视化图解总结当前第一节课的核心架构，并出一道互动检查题考考我”*）。ReAct 伴学 Agent 会自动展示思考推理过程，并调用 `visual_explainer` 与 `present_interactive_check` 工具在对话流中直接渲染 **4 步交互式 SVG 结构图解卡片** 与随堂练习：
+
+![第 2 步：今日工作台与 AI 伴学助手实时生成图解](./docs/screenshots/02-today-workbench.png)
+
+---
+
+### 第 3 步：进入「互动课堂」学习大模型生成的结构化讲义
+点击 **「进入课堂学习」**（或左侧导航 **「课堂」**），即可进入大模型为本节课生成的完整互动课堂：
+- 顶部配备 **45 分钟课堂专注计时器**（记录真实学习时长并自动校准个人学习节奏因子 `paceFactor`）；
+- 正文包含明确的 **学习目标**、**完成条件**、**课前准备**、生动的 **直觉类比**（如将单次 LLM 调用、固定工作流与自主 Agent 循环进行对比）以及循序渐进的章节详解：
+
+![第 3 步：大模型生成的结构化课堂讲义](./docs/screenshots/03-classroom-teaching.png)
+
+---
+
+### 第 4 步：课堂内联动交互式全景 SVG 架构图解与 AI 导师导学
+在课堂讲义下方，系统自动同步嵌入了 AI 助手生成的 **「结构图解 · 全景 (4步) · Agent 循环与系统边界总览」** 沙盒化 SVG 架构图（支持分布步进、全景切换、查看源码与全屏放大）；同时右侧 AI 导师会给出针对本节易错点的辨析题作答引导：
+
+![第 4 步：课堂内嵌交互式 SVG 架构图解與 AI 导师联动](./docs/screenshots/04-classroom-visual-svg.png)
+
+---
+
+### 第 5 步：完成随堂互动练习，实时判分并更新 BKT 认知掌握度
+切换到课堂的 **「练习 / 测验」** 区域（或点击右侧助手的 **「去作答」**），直接勾选或填写大模型生成的互动检查题并提交。
+- 内置确定性评分引擎实时完成判分（如 **「评分通过 (100 分)，已更新掌握状态」**）；
+- 展开详尽的参考解析，同时自动触发 **BKT（贝叶斯知识追踪）+ FSRS（间隔重复算法）** 更新该知识节点的后验掌握度与下次复习时间；若连续答错卡壳，可一键向右侧 AI 导师索取苏格拉底式提示或触发降难补救课程：
+
+![第 5 步：课堂互动练习实时判分与掌握度更新](./docs/screenshots/05-classroom-practice-graded.png)
+
+---
+
+### 第 6 步：在「知识图谱 · 学习路径」总览分阶段课程体系
+切换到左侧导航 **「知识图谱」** 的 **「学习路径」** 视图，可以清晰查看大模型规划的 **3 个大章节 · 8 个小章节 · 10 节课** 阶梯路线，实时追踪每节课的预计耗时、先修条件与当前掌握度（可以看到刚刚完成练习的第 1 课掌握度已更新为 **75%**）：
+
+![第 6 步：结构化课程学习路径视图](./docs/screenshots/06-learning-path-stages.png)
+
+---
+
+### 第 7 步：在「知识图谱 · 关系图谱」探索动态 DAG 先修依赖与 FSRS 状态
+切换到 **「关系图谱」** 视图，系统通过拓扑分层算法渲染出带先修解锁关系的有向无环图（DAG）：
+- 点击任意节点（如 `1.1 Agent 系统边界与循环架构`），下方详情面板即刻展示 **已验证掌握度 (BKT 75%)**、**下次复习日期**、**正课排程时段** 以及 **前置先修 / 后续解锁节点**（如 `1.2 ReAct 轨迹：Thought-Action-Observation` 与 `2.1 工具接口设计与 JSON Schema`），点击即可平滑聚焦跳转：
+
+![第 7 步：动态 DAG 知识图谱与节点掌握度面板](./docs/screenshots/07-knowledge-graph-dag.png)
+
+---
+
+### 第 8 步：在「学习日历」管理睡眠红线保护下的自动排课
+切换到左侧导航 **「学习日历」**（支持 **日轴** 与 **周轴** 切换），大模型建课工作流已结合你设定的每日可投入时长（45 分钟）与 **睡眠红线（`23:00–07:00` 严禁排课）**，将 10 节课程自动排入未来 10 天的 `19:00–19:45` 空闲窗口。
+- 支持手动添加固定日程、点击 **「助手重排」** 让 AI 根据突发日程冲突自动顺延重排，或点击下载按钮一键导出标准 `.ics` 日历文件：
+
+![第 8 步：自动排课后的学习日历周轴视图](./docs/screenshots/08-study-calendar-week.png)
+
+---
+
+### 第 9 步：在「运行轨迹」审计真实大模型 ReAct 工具调用链与计划变更 Diff
+切换到左侧导航 **「运行轨迹」 → 「开发者 Trace」**，所有的后台大模型推理与状态变更都 100% 透明可查：
+1. **ReAct Execution Trace 时间线**：精确记录每一次 `deepseek / deepseek-flash` 调用的 `run_id`、总耗时（`19.76s`）、模型请求轮次，以及 `visual_explainer`、`present_interactive_check` 等工具的请求参数、执行耗时与返回结果：
+
+![第 9 步 (A)：真实 DeepSeek ReAct 工具调用执行轨迹](./docs/screenshots/09-execution-trace-react.png)
+
+2. **计划变更 Diff 历史**：切换到 **「计划变更 Diff 历史」** 标签页，可回溯大模型建轨排课或日程重排产生的结构化 Diff（如 `日程数：0 → 10`，清晰列出每一条 `+ 新增`、`调整` 或 `- 移除` 的课程时段）：
+
+![第 9 步 (B)：结构化计划变更 Diff 审计历史](./docs/screenshots/10-plan-diff-audit.png)
+
+---
+
+## 🚀 核心技术架构与模块说明
 
 ### 1. Agent-Native 课程研究与生成工作流 (`lib/curriculum-planner.ts`, `lib/topic-researcher.ts`)
-- **多步自治建课**：输入任意学习目标后，Agent 自动执行主题调研、构建具有先修依赖关系的 DAG 课程蓝图，并在睡眠红线与空闲窗口约束下自动排入日程。
-- **结构化草案与确认机制**：建课与大规模重排均生成可视化预览卡片，支持一键落盘或按需微调。
+- **多模式知识获取**：支持 `auto_web`（联网检索权威资料与常见误区后规划课程）、`quick_draft`（基于模型知识快速构建路线）与 `user_materials`（围绕用户提供的 URL 或笔记定制路线）。
+- **端到端自治闭环**：一次目标输入即可自动串联「主题调研 → DAG 课程蓝图生成 → 睡眠红线约束排课 → 首课讲义与互动练习备课」。
 
 ### 2. 认知建模与 7 态教学状态机 (`lib/bkt-fsrs.ts`, `lib/pedagogy.ts`, `lib/learning-engine.ts`)
 - **FSRS + BKT 双引擎融合**：结合官方 [`ts-fsrs`](https://github.com/open-spaced-repetition/ts-fsrs) 间隔重复算法（稳定性 Stability、难度 Difficulty、可提取性 Retrievability）与贝叶斯知识追踪（BKT 后验掌握概率更新）。
@@ -62,7 +115,7 @@
 - **自适应补救与诊断跳过**：已掌握的先修节点支持「诊断跳过 (`skipAsMastered`)」并自动释放原排程时段；连续答错卡壳时自动触发降难补救块并顺延下游依赖课程。
 
 ### 3. 生成式教学 UI 与多语言代码沙盒 (`components/gen-ui/`, `lib/visual-explainer.ts`, `lib/labs.ts`)
-- **丰富 Gen-UI 教学组件**：在对话流与课堂中原生渲染主动回忆测验卡（`ActiveRecallCard`）、沙盒化 SVG / Mermaid 动态图解（`VisualExplanationCard`）、知识路线阶段卡（`RoadmapStagesCard`）、遗忘曲线图（`RetentionCurveChart`）与计划变更对比卡（`PlanDiffCard`）。
+- **丰富 Gen-UI 教学组件**：在对话流与课堂中原生渲染主动回忆测验卡（`ActiveRecallCard` / `InteractiveCheckCard`）、沙盒化分步 SVG / Mermaid 动态图解（`VisualExplanationCard`）、知识路线阶段卡（`RoadmapStagesCard`）、FSRS 遗忘曲线图（`RetentionCurveChart`）与计划变更对比卡（`RescheduleCard`）。
 - **内置 CodeMirror 代码练习环境**：支持 Python、Java、C++、JavaScript/TypeScript、SQL、HTML、CSS、JSON、Markdown 等语法高亮与即时规则校验。
 
 ### 4. 约束规划与超时节奏校准 (`lib/scheduler.ts`)
@@ -78,14 +131,14 @@
 
 ---
 
-## 🏗️ 系统架构
+## 🏗️ 系统架构图
 
 ```mermaid
 flowchart TB
   subgraph UI["前端交互层 (Next.js 16 + React 19 + Electron Shell)"]
     WB["三栏工作台 Workbench<br/>今日 / 课堂 / 图谱 / 日历 / 复习 / 记忆 / 轨迹"]
     COPILOT["ReAct 伴学助手面板<br/>流式对话 + 工具卡片渲染"]
-    GENUI["生成式教学 UI (components/gen-ui)<br/>ActiveRecall / SandboxedSVG / Mermaid / PlanDiff"]
+    GENUI["生成式教学 UI (components/gen-ui)<br/>InteractiveCheck / SandboxedSVG / Mermaid / PlanDiff"]
   end
 
   subgraph ENGINE["领域与认知引擎层 (Full-Stack TypeScript)"]
@@ -185,7 +238,7 @@ cp .env.example .env
 ```dotenv
 OPENAI_BASE_URL=https://api.deepseek.com/v1
 OPENAI_API_KEY=your_api_key_here
-ATLAS_MODEL=deepseek-chat
+ATLAS_MODEL=deepseek-flash
 ```
 
 > [!IMPORTANT]
@@ -241,7 +294,7 @@ xuejing-learning-os/
 ├── public/                       # 应用图标与静态资源
 ├── skills/                       # Agent 内置领域技能定义 (visual-explainer 等)
 ├── tests/                        # 16 套全链路逻辑、算法、Trace 与端到端单元测试
-├── docs/screenshots/             # 应用界面截图
+├── docs/screenshots/             # 真实调用大模型建课与伴学全流程实机截图 (01~10)
 ├── .env.example                  # 环境变量配置模板（不含任何真实密钥）
 ├── electron-builder.yml          # Electron 跨平台打包配置
 └── package.json                  # 项目依赖与脚本定义
